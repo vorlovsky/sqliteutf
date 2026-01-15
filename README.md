@@ -1,0 +1,23 @@
+# sqliteutf.c example
+
+An SQLite extension for `sqlite3` Dart package implementing basic case convertion of UTF texts.
+Based on code by Jan Bergström
+
+To build the extension:
+
+1. A `CMakeLists.txt` (in `src/`) is written for Android, Linux and Windows.
+2. On Android, the NDK is set up to point at the CMake builds in `android/build.gradle`.
+3. For macOS and iOS (which don't use CMake as a build tool), the `sqliteutf.c` file is added
+   to `macos|ios/Classes` instead.
+4. Note that this example does not currently support WebAssembly. Loadable extensions don't
+   work on the web, but you can compile a custom `sqlite3.wasm` bundle with the desired extensions
+   included. The `../custom_wasm_build` example has an example for that setup.
+
+This build setup includes a shared library with the extension in your app. To use it, load the
+`DynamicLibrary` and then load it into sqlite3 like this:
+
+```dart
+  sqlite3.ensureExtensionLoaded(
+    SqliteExtension.inLibrary(sqliteutf.lib, 'sqlite3_sqliteutf_init'),
+  );
+```
